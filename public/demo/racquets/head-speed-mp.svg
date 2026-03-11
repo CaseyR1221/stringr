@@ -1,0 +1,15 @@
+<svg width="480" height="640" viewBox="0 0 480 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="480" height="640" rx="32" fill="#F8FAFC"/>
+  <rect x="32" y="32" width="416" height="576" rx="24" fill="#E2E8F0"/>
+  <ellipse cx="240" cy="184" rx="124" ry="162" fill="#1E293B"/>
+  <ellipse cx="240" cy="184" rx="96" ry="130" fill="#F8FAFC"/>
+  <path d="M240 314L246 568" stroke="#1E293B" stroke-width="24" stroke-linecap="round"/>
+  <path d="M246 568C246 568 228 590 214 602C201 592 182 574 182 574L200 318" fill="#F97316"/>
+  <path d="M172 76L308 292" stroke="#CBD5E1" stroke-width="6"/>
+  <path d="M308 76L172 292" stroke="#CBD5E1" stroke-width="6"/>
+  <path d="M146 118H334" stroke="#CBD5E1" stroke-width="4"/>
+  <path d="M140 160H340" stroke="#CBD5E1" stroke-width="4"/>
+  <path d="M140 202H340" stroke="#CBD5E1" stroke-width="4"/>
+  <path d="M146 244H334" stroke="#CBD5E1" stroke-width="4"/>
+  <text x="240" y="86" text-anchor="middle" fill="#F97316" font-family="Arial, sans-serif" font-size="22" font-weight="700">HEAD SPEED MP</text>
+</svg>

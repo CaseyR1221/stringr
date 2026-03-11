@@ -1,0 +1,15 @@
+<svg width="480" height="640" viewBox="0 0 480 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="480" height="640" rx="32" fill="#F8FAFC"/>
+  <rect x="32" y="32" width="416" height="576" rx="24" fill="#E2E8F0"/>
+  <ellipse cx="240" cy="184" rx="122" ry="160" fill="#0F172A"/>
+  <ellipse cx="240" cy="184" rx="92" ry="126" fill="#F8FAFC"/>
+  <path d="M240 310L262 566" stroke="#0F172A" stroke-width="24" stroke-linecap="round"/>
+  <path d="M262 566C262 566 237 590 224 602C212 592 192 572 192 572L214 318" fill="#2563EB"/>
+  <path d="M176 80L304 288" stroke="#CBD5E1" stroke-width="6"/>
+  <path d="M304 80L176 288" stroke="#CBD5E1" stroke-width="6"/>
+  <path d="M148 118H332" stroke="#CBD5E1" stroke-width="4"/>
+  <path d="M142 158H338" stroke="#CBD5E1" stroke-width="4"/>
+  <path d="M142 198H338" stroke="#CBD5E1" stroke-width="4"/>
+  <path d="M148 238H332" stroke="#CBD5E1" stroke-width="4"/>
+  <text x="240" y="86" text-anchor="middle" fill="#2563EB" font-family="Arial, sans-serif" font-size="22" font-weight="700">YONEX EZONE 98</text>
+</svg>

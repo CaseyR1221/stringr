@@ -1,0 +1,15 @@
+<svg width="480" height="640" viewBox="0 0 480 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="480" height="640" rx="32" fill="#F8FAFC"/>
+  <rect x="32" y="32" width="416" height="576" rx="24" fill="#E5E7EB"/>
+  <ellipse cx="240" cy="184" rx="122" ry="160" fill="#111827"/>
+  <ellipse cx="240" cy="184" rx="94" ry="128" fill="#F8FAFC"/>
+  <path d="M240 310L220 566" stroke="#111827" stroke-width="24" stroke-linecap="round"/>
+  <path d="M220 566C220 566 242 592 256 604C271 591 290 570 290 570L268 318" fill="#16A34A"/>
+  <path d="M176 76L304 292" stroke="#D1D5DB" stroke-width="6"/>
+  <path d="M304 76L176 292" stroke="#D1D5DB" stroke-width="6"/>
+  <path d="M148 118H332" stroke="#D1D5DB" stroke-width="4"/>
+  <path d="M142 160H338" stroke="#D1D5DB" stroke-width="4"/>
+  <path d="M142 202H338" stroke="#D1D5DB" stroke-width="4"/>
+  <path d="M148 244H332" stroke="#D1D5DB" stroke-width="4"/>
+  <text x="240" y="86" text-anchor="middle" fill="#16A34A" font-family="Arial, sans-serif" font-size="22" font-weight="700">WILSON BLADE 98</text>
+</svg>
