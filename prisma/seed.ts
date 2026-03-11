@@ -1,6 +1,9 @@
-import "dotenv/config";
+import { config as loadEnv } from "dotenv";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
+
+loadEnv({ path: ".env.local", override: false });
+loadEnv();
 
 const connectionString = process.env.DATABASE_URL;
 
