@@ -1,59 +1,73 @@
-import Link from "next/link";
-
-import { buttonVariants } from "@/components/ui/button";
+import { createRacquetAction } from "@/app/dashboard/racquets/actions";
+import { RacquetCard } from "@/components/racquets/racquet-card";
+import { RacquetForm } from "@/components/racquets/racquet-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { requireCurrentUser } from "@/lib/auth-session";
+import { prisma } from "@/lib/prisma";
 
-const sampleRacquets = [
-  {
-    id: "demo-ezone-98",
-    name: "Match Frame 1",
-    subtitle: "Yonex EZONE 98 with seeded demo image support",
-  },
-  {
-    id: "demo-blade-98",
-    name: "Practice Frame",
-    subtitle: "Wilson Blade 98 with sample string and play history",
-  },
-  {
-    id: "demo-speed-mp",
-    name: "Clay Backup",
-    subtitle: "Head Speed MP with a current full-bed poly setup",
-  },
-];
+export default async function RacquetsPage() {
+  const user = await requireCurrentUser();
 
-export default function RacquetsPage() {
+  const racquets = await prisma.racquet.findMany({
+    where: {
+      userId: user.id,
+    },
+    select: {
+      id: true,
+      nickname: true,
+      brand: true,
+      model: true,
+      headSize: true,
+      stringPattern: true,
+      weightGrams: true,
+      imageUrl: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+
   return (
-    <main className="container space-y-8 py-12">
-      <div className="space-y-3">
+    <main className="container space-y-10 py-12">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-slate-500">Racquets</p>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-950">
-          Placeholder list route with seeded model targets.
-        </h1>
-        <p className="max-w-2xl text-sm leading-6 text-slate-600">
-          The Prisma seed includes realistic local demo data. This page remains a shell until the
-          actual list UI lands in Phase 2.
-        </p>
+
+        <div className="space-y-3">
+          <h1 className="text-3xl font-semibold tracking-tight text-slate-950">Manage your racquets</h1>
+          <p className="max-w-2xl text-sm leading-6 text-slate-600">
+            Keep your frame details in one place. String setup, hours played, and restring status
+            stay as placeholders until later phases.
+          </p>
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        {sampleRacquets.map((racquet) => (
-          <Card key={racquet.id} className="border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>{racquet.name}</CardTitle>
-              <CardDescription>{racquet.subtitle}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link
-                className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-                href={`/dashboard/racquets/${racquet.id}`}
-              >
-                Open detail shell
-              </Link>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {racquets.length > 0 ? (
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {racquets.map((racquet) => (
+            <RacquetCard key={racquet.id} racquet={racquet} />
+          ))}
+        </div>
+      ) : (
+        <Card className="border-dashed border-slate-300 bg-white shadow-sm">
+          <CardHeader>
+            <CardTitle>No racquets yet</CardTitle>
+            <CardDescription>
+              Add your first racquet below to start building out your gear list.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+
+      <Card id="add-racquet" className="border-slate-200 bg-white shadow-sm">
+        <CardContent className="p-6">
+          <RacquetForm
+            action={createRacquetAction}
+            description="Add the specs you care about now. More racquet tracking details can land in later phases."
+            submitLabel="Add racquet"
+            title="Add racquet"
+          />
+        </CardContent>
+      </Card>
     </main>
   );
 }

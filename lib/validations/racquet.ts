@@ -1,14 +1,52 @@
 import { z } from "zod";
 
+const optionalText = (max: number) =>
+  z.preprocess(
+    (value) => {
+      if (typeof value !== "string") {
+        return value;
+      }
+
+      const trimmedValue = value.trim();
+      return trimmedValue.length > 0 ? trimmedValue : undefined;
+    },
+    z.string().max(max).optional(),
+  );
+
+const optionalPositiveInt = z.preprocess(
+  (value) => {
+    if (value === "" || value === null || value === undefined) {
+      return undefined;
+    }
+
+    if (typeof value === "string") {
+      return Number(value);
+    }
+
+    return value;
+  },
+  z.number().int().positive().optional(),
+);
+
 export const racquetSchema = z.object({
-  nickname: z.string().trim().max(60).optional(),
-  brand: z.string().trim().min(1, "Brand is required."),
-  model: z.string().trim().min(1, "Model is required."),
-  headSize: z.coerce.number().int().positive().optional(),
-  stringPattern: z.string().trim().max(30).optional(),
-  weightGrams: z.coerce.number().int().positive().optional(),
-  imageUrl: z.string().trim().max(255).optional(),
-  notes: z.string().trim().max(500).optional(),
+  nickname: optionalText(60),
+  brand: z.string().trim().min(1, "Brand is required.").max(60),
+  model: z.string().trim().min(1, "Model is required.").max(80),
+  headSize: optionalPositiveInt,
+  stringPattern: optionalText(30),
+  weightGrams: optionalPositiveInt,
+  imageUrl: optionalText(255),
+  notes: optionalText(500),
 });
 
+export type RacquetFormValues = {
+  brand: string;
+  model: string;
+  nickname?: string;
+  headSize?: number;
+  stringPattern?: string;
+  weightGrams?: number;
+  imageUrl?: string;
+  notes?: string;
+};
 export type RacquetInput = z.infer<typeof racquetSchema>;
