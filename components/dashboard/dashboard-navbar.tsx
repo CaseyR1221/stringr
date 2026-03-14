@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
 
-import { buttonVariants } from "@/components/ui/button";
+import { signOut } from "@/lib/auth-client";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navigation = [
@@ -45,7 +47,22 @@ function isActivePath(pathname: string, href: string) {
 
 export function DashboardNavbar({ userLabel }: DashboardNavbarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const initials = getInitials(userLabel);
+
+  function handleSignOut() {
+    startTransition(async () => {
+      const { error } = await signOut();
+
+      if (error) {
+        return;
+      }
+
+      router.push("/");
+      router.refresh();
+    });
+  }
 
   return (
     <header className="sticky top-0 z-40 pt-4">
@@ -103,6 +120,16 @@ export function DashboardNavbar({ userLabel }: DashboardNavbarProps) {
                   </p>
                   <p className="max-w-40 truncate text-sm font-medium text-slate-900">{userLabel}</p>
                 </div>
+                <Button
+                  className="rounded-full border-slate-200/80 bg-white/80 px-4 text-slate-700 hover:bg-white"
+                  disabled={isPending}
+                  onClick={handleSignOut}
+                  size="sm"
+                  type="button"
+                  variant="outline"
+                >
+                  {isPending ? "Signing out..." : "Sign out"}
+                </Button>
               </div>
             </div>
           </div>
