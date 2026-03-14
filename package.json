@@ -14,6 +14,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@better-auth/infra": "^0.1.12",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "7.5.0",
