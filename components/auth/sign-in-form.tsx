@@ -6,6 +6,7 @@ import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { signIn } from "@/lib/auth-client";
 import { signInSchema, type SignInInput } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,20 +28,13 @@ function getAuthErrorMessage(error: unknown) {
 }
 
 async function signInWithEmail(values: SignInInput) {
-  const response = await fetch("/api/auth/sign-in/email", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(values),
+  const { error } = await signIn.email({
+    email: values.email,
+    password: values.password,
   });
 
-  const payload = (await response.json().catch(() => null)) as
-    | { message?: string }
-    | null;
-
-  if (!response.ok) {
-    throw new Error(payload?.message ?? "Unable to sign in with those credentials.");
+  if (error) {
+    throw new Error(error.message ?? "Unable to sign in with those credentials.");
   }
 }
 
