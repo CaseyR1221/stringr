@@ -1,7 +1,7 @@
 import { createRacquetAction } from "@/app/dashboard/racquets/actions";
+import { AddRacquetPanel } from "@/components/racquets/add-racquet-panel";
 import { RacquetCard } from "@/components/racquets/racquet-card";
-import { RacquetForm } from "@/components/racquets/racquet-form";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireCurrentUser } from "@/lib/auth-session";
 import { prisma } from "@/lib/prisma";
 
@@ -58,16 +58,7 @@ export default async function RacquetsPage() {
         </Card>
       )}
 
-      <Card id="add-racquet" className="border-slate-200 bg-white shadow-sm">
-        <CardContent className="p-6">
-          <RacquetForm
-            action={createRacquetAction}
-            description="Add the specs you care about now. More racquet tracking details can land in later phases."
-            submitLabel="Add racquet"
-            title="Add racquet"
-          />
-        </CardContent>
-      </Card>
+      <AddRacquetPanel action={createRacquetAction} />
     </main>
   );
 }

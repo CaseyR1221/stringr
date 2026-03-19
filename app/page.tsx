@@ -1,3 +1,4 @@
+
 import { HomeNavbar } from "@/components/home/home-navbar";
 import { getCurrentUserSession } from "@/lib/auth-session";
 
@@ -16,11 +17,12 @@ export default async function HomePage() {
             </p>
             <div className="space-y-3">
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-                Phase 1 foundation for a clean racquet and string tracking dashboard.
+                Phase 1 foundation for a clean racquet and string tracking
+                dashboard.
               </h1>
               <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                The app shell, core data model, auth wiring, and demo seed data are set up without
-                pushing into CRUD or analytics yet.
+                The app shell, core data model, auth wiring, and demo seed data
+                are set up without pushing into CRUD or analytics yet.
               </p>
             </div>
           </div>

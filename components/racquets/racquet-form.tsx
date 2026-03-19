@@ -25,6 +25,8 @@ type RacquetFormProps = {
   submitLabel: string;
   title: string;
   description: string;
+  cancelLabel?: string;
+  onCancel?: () => void;
 };
 
 const fields: Array<keyof RacquetFormValues> = [
@@ -44,6 +46,8 @@ export function RacquetForm({
   submitLabel,
   title,
   description,
+  cancelLabel = "Cancel",
+  onCancel,
 }: RacquetFormProps) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<RacquetFormValues, unknown, RacquetInput>({
@@ -241,7 +245,13 @@ export function RacquetForm({
             <p className="text-sm font-medium text-destructive">{form.formState.errors.root.message}</p>
           ) : null}
 
-          <div className="flex justify-end">
+          <div className="flex flex-wrap justify-end gap-3">
+            {onCancel ? (
+              <Button disabled={isPending} onClick={onCancel} type="button" variant="outline">
+                {cancelLabel}
+              </Button>
+            ) : null}
+
             <Button disabled={isPending} type="submit">
               {isPending ? "Saving..." : submitLabel}
             </Button>
