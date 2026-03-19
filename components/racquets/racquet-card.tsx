@@ -36,14 +36,14 @@ export function RacquetCard({ racquet }: RacquetCardProps) {
   const displayName = racquet.nickname?.trim() || `${racquet.brand} ${racquet.model}`;
 
   return (
-    <Link className="group block h-full focus-visible:outline-none" href={`/dashboard/racquets/${racquet.id}`}>
+    <Link className="group block h-full focus-visible:outline-none" href={`/dashboard/racquets/${racquet.id}?name=${encodeURIComponent(displayName)}`}>
       <Card
         className={cn(
           "flex h-full flex-col overflow-hidden border-slate-200 bg-white shadow-sm transition-colors duration-150",
           "hover:border-slate-300 hover:bg-slate-50/40 focus-visible:border-slate-400",
         )}
       >
-        <div className="aspect-[4/3] border-b border-slate-200 bg-slate-100">
+        <div className="aspect-4/3 border-b border-slate-200 bg-slate-100">
           <RacquetImage label={displayName} imageUrl={racquet.imageUrl} />
         </div>
 
