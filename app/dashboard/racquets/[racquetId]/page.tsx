@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { updateRacquetAction } from "@/app/dashboard/racquets/actions";
+import { createStringJobAction, updateRacquetAction } from "@/app/dashboard/racquets/actions";
+import { CurrentStringSetupCard } from "@/components/racquets/current-string-setup-card";
 import { DeleteRacquetButton } from "@/components/racquets/delete-racquet-button";
 import { RacquetForm } from "@/components/racquets/racquet-form";
 import { RacquetImage } from "@/components/racquets/racquet-image";
+import { StringJobForm } from "@/components/racquets/string-job-form";
+import { StringJobHistoryList } from "@/components/racquets/string-job-history-list";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireCurrentUser } from "@/lib/auth-session";
@@ -17,20 +20,70 @@ type RacquetDetailPageProps = {
   }>;
 };
 
+function getActiveStringJob<
+  T extends {
+    id: string;
+    isCurrent: boolean;
+  },
+>(stringJobs: T[]) {
+  return stringJobs.find((stringJob) => stringJob.isCurrent) ?? stringJobs[0] ?? null;
+}
+
 export default async function RacquetDetailPage({ params }: RacquetDetailPageProps) {
   const { racquetId } = await params;
   const user = await requireCurrentUser();
+
+  console.log("RacquetDetailPage params:", racquetId);
 
   const racquet = await prisma.racquet.findFirst({
     where: {
       id: racquetId,
       userId: user.id,
     },
+    include: {
+      stringJobs: {
+        select: {
+          id: true,
+          mainString: true,
+          crossString: true,
+          tensionMainLbs: true,
+          tensionCrossLbs: true,
+          gauge: true,
+          stringType: true,
+          strungAt: true,
+          notes: true,
+          isCurrent: true,
+        },
+        orderBy: [
+          {
+            strungAt: "desc",
+          },
+          {
+            createdAt: "desc",
+          },
+        ],
+      },
+    },
   });
 
   if (!racquet) {
     notFound();
   }
+
+  const activeStringJob = getActiveStringJob(racquet.stringJobs);
+  const stringJobHistory = racquet.stringJobs.map((stringJob) => ({
+    id: stringJob.id,
+    mainString: stringJob.mainString,
+    crossString: stringJob.crossString,
+    tensionMainLbs: stringJob.tensionMainLbs,
+    tensionCrossLbs: stringJob.tensionCrossLbs,
+    gauge: stringJob.gauge,
+    stringType: stringJob.stringType,
+    strungAt: stringJob.strungAt.toISOString(),
+    notes: stringJob.notes,
+    isCurrent: stringJob.id === activeStringJob?.id,
+  }));
+  const defaultStrungAt = new Date().toISOString().slice(0, 10);
 
   return (
     <main className="container space-y-8 py-12">
@@ -42,7 +95,8 @@ export default async function RacquetDetailPage({ params }: RacquetDetailPagePro
           {racquet.nickname?.trim() || `${racquet.brand} ${racquet.model}`}
         </h1>
         <p className="max-w-2xl text-sm leading-6 text-slate-600">
-          Review the racquet details you have on file, then update or remove the record here.
+          Review the racquet details, current string setup, and restring history for this frame in
+          one place.
         </p>
       </div>
 
@@ -122,16 +176,9 @@ export default async function RacquetDetailPage({ params }: RacquetDetailPagePro
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="space-y-6">
-          {/* TODO: Replace this placeholder with real string job history in Phase 3. */}
-          <Card className="border-slate-200 bg-white shadow-sm">
-            <CardHeader>
-              <CardTitle>String jobs</CardTitle>
-              <CardDescription>
-                Placeholder section for Phase 3. This page will list restring history and the
-                current setup once that work starts.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+          <CurrentStringSetupCard stringJob={activeStringJob} />
+
+          <StringJobHistoryList racquetId={racquet.id} stringJobs={stringJobHistory} />
 
           {/* TODO: Replace this placeholder with real play session history in Phase 4. */}
           <Card className="border-slate-200 bg-white shadow-sm">
@@ -146,6 +193,20 @@ export default async function RacquetDetailPage({ params }: RacquetDetailPagePro
         </div>
 
         <div className="space-y-6">
+          <Card id="add-string-job" className="border-slate-200 bg-white shadow-sm">
+            <CardContent className="p-6">
+              <StringJobForm
+                action={createStringJobAction.bind(null, racquet.id)}
+                defaultValues={{
+                  strungAt: defaultStrungAt,
+                }}
+                description="Log a new restring for this racquet. New jobs become the active setup."
+                submitLabel="Add string job"
+                title="Add string job"
+              />
+            </CardContent>
+          </Card>
+
           <Card className="border-slate-200 bg-white shadow-sm">
             <CardContent className="p-6">
               <RacquetForm

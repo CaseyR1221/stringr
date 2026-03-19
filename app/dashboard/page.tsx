@@ -11,11 +11,6 @@ const dashboardCards = [
     href: "/dashboard/racquets",
   },
   {
-    title: "String jobs",
-    description: "Tracked in the schema and seed data, but not surfaced in CRUD yet.",
-    href: "/dashboard/racquets/demo-ezone-98",
-  },
-  {
     title: "Play sessions",
     description: "Seeded realistically for local development and future restring logic.",
     href: "/dashboard/racquets/demo-blade-98",
